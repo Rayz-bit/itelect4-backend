@@ -142,3 +142,8 @@ export type NewEventBody = Pick<
   Event,
   "title" | "date" | "location" | "capacity"
 >;
+// RSVP data stored by Mongoose
+export type RsvpDoc = Omit<RSVP, "id" | "userId" | "eventId"> & {
+  userId: Types.ObjectId;
+  eventId: Types.ObjectId;
+};

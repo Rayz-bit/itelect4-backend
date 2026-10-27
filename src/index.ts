@@ -2,17 +2,16 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
-import rsvpRoutes from "./routes/rsvps";
+
 import authRoutes from "./routes/auth";
 import eventRoutes from "./routes/events";
+import rsvpRoutes from "./routes/rsvps";
 
 const app = express();
 const PORT = Number(process.env.PORT) || 4000;
 
-// Allowed frontend origins from the environment
-const allowedOrigins = (
-  process.env.CORS_ORIGIN || "http://localhost:5173"
-)
+// Allowed frontend origins come only from the environment
+const allowedOrigins = (process.env.CORS_ORIGIN || "")
   .split(",")
   .map((origin) => origin.trim())
   .filter(Boolean);
@@ -85,6 +84,8 @@ app.use("/api/auth", authRoutes);
 
 // Event routes
 app.use("/api/events", eventRoutes);
+
+// RSVP routes
 app.use("/api/rsvps", rsvpRoutes);
 
 // Unknown routes
@@ -107,7 +108,7 @@ app.use(
 // Local development only; Vercel handles requests itself
 if (process.env.VERCEL !== "1") {
   app.listen(PORT, () => {
-    console.log(`API running at http://localhost:${PORT}`);
+    console.log(`API running on port ${PORT}`);
   });
 }
 

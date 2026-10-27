@@ -11,7 +11,7 @@ const PORT = Number(process.env.PORT) || 4000;
 
 // Allowed frontend origins from the environment
 const allowedOrigins = (
-  process.env.CORS_ORIGIN || "http://localhost:5173"
+  process.env.CORS_ORIGIN || ""
 )
   .split(",")
   .map((origin) => origin.trim())
@@ -107,7 +107,7 @@ app.use(
 // Local development only; Vercel handles requests itself
 if (process.env.VERCEL !== "1") {
   app.listen(PORT, () => {
-    console.log(`API running at http://localhost:${PORT}`);
+    console.log(`API running on port ${PORT}`);
   });
 }
 

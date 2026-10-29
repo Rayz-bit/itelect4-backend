@@ -2,17 +2,17 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
-import rsvpRoutes from "./routes/rsvps";
+
 import authRoutes from "./routes/auth";
 import eventRoutes from "./routes/events";
+import rsvpRoutes from "./routes/rsvps";
+import aiRoutes from "./routes/ai"; // <-- NEW (1): the import, with the others at the top
 
 const app = express();
 const PORT = Number(process.env.PORT) || 4000;
 
-// Allowed frontend origins from the environment
-const allowedOrigins = (
-  process.env.CORS_ORIGIN || ""
-)
+// Allowed frontend origins come only from the environment
+const allowedOrigins = (process.env.CORS_ORIGIN || "")
   .split(",")
   .map((origin) => origin.trim())
   .filter(Boolean);
@@ -85,7 +85,12 @@ app.use("/api/auth", authRoutes);
 
 // Event routes
 app.use("/api/events", eventRoutes);
+
+// RSVP routes
 app.use("/api/rsvps", rsvpRoutes);
+
+// AI routes: private, rate limited, the only route that talks to Gemini
+app.use("/api/ai", aiRoutes); // <-- NEW (2): right after /api/rsvps
 
 // Unknown routes
 app.use((_req, res) => {
